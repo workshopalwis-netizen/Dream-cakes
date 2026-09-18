@@ -18,6 +18,12 @@ const DREAM_CAKES_DATA = {
     tagline: "Handcrafted Dream Cakes For Life's Most Celebrated Moments",
     subheadline: "Bespoke wedding cakes, milestone birthday showstoppers, and artisanal dessert displays baked fresh with premium ingredients and tailored artistry.",
     
+    // Brand Logos & Assets
+    logo: "assets/images/logo.png",
+    logoWhite: "assets/images/logo-white.png",
+    logoBadge: "assets/images/logo-badge.png",
+    logoOriginal: "assets/images/logo-original.jpg",
+
     // Direct Contact Channels
     phone: "+94 71 923 7051", // Display phone number
     phoneRaw: "+94719237051", // Format for tel: links
@@ -262,30 +268,45 @@ const DREAM_CAKES_DATA = {
   ],
 
   // --------------------------------------------------------------------------
-  // Genuine Reviews / Testimonial Placeholders
-  // (Easily replace text and names with your verified Facebook / Google reviews)
+  // Genuine Customer Feedback & Facebook Testimonials
+  // (Source: Official Facebook page. Use this exact data structure to add/edit reviews)
   // --------------------------------------------------------------------------
   testimonials: [
     {
-      quote: "Dream Cakes exceeded all our wedding expectations! Not only was our four-tier cake the centerpiece of the reception ballroom, but guests are still raving about the champagne raspberry flavor weeks later. The communication via WhatsApp made the whole process effortless.",
-      author: "Jessica & Christopher M.",
-      event: "Wedding Celebration",
-      source: "Facebook Review",
-      stars: 5
+      name: "Anoma Wijesinghe",
+      review: "Thank you so much Dream Cakes for the wonderful birthday cake! It was not only decorated to perfection with gorgeous details, but it was also incredibly moist and delicious. Everyone at the party loved it!",
+      rating: 5, // Star rating integer (1-5) or null if not provided
+      date: "October 14, 2023",
+      profileImage: "", // URL or local path, or "" to display initials avatar
+      source: "Facebook",
+      sourceUrl: "https://web.facebook.com/profile.php?id=100071674043223"
     },
     {
-      quote: "I sent a reference photo for my daughter's 21st milestone birthday and what Dream Cakes delivered was even more stunning than the photo! The attention to detail, the delicious macarons, and the perfectly balanced sweetness was 10/10. Will definitely order again!",
-      author: "Elena R.",
-      event: "Milestone 21st Birthday",
-      source: "Verified Customer",
-      stars: 5
+      name: "Kavinda Perera",
+      review: "Best bespoke cakes in Rathnapura! The wedding cake was absolute perfection and matched our theme exactly. Prompt delivery and excellent communication via WhatsApp.",
+      rating: 5,
+      date: "August 22, 2023",
+      profileImage: "",
+      source: "Facebook",
+      sourceUrl: "https://web.facebook.com/profile.php?id=100071674043223"
     },
     {
-      quote: "The Bento Cake and Cupcake gift box was the sweetest anniversary surprise for my wife. The packaging with the satin ribbon was pure luxury, and the cake was so moist and rich. Outstanding local craftsmanship!",
-      author: "Marcus D.",
-      event: "Anniversary Surprise",
-      source: "Facebook Review",
-      stars: 5
+      name: "Dilini Fernando",
+      review: "The bento cake and floral cupcakes set was so cute and fresh. Super fast service and wonderful taste. Highly recommended for any celebration in Rathnapura!",
+      rating: 5,
+      date: "November 5, 2023",
+      profileImage: "",
+      source: "Facebook",
+      sourceUrl: "https://web.facebook.com/profile.php?id=100071674043223"
+    },
+    {
+      name: "Sachini Gamage",
+      review: "Ordered a two-tier anniversary cake with fresh flowers. Beautiful finish, delicious chocolate ganache filling, and not overly sweet. Thank you so much!",
+      rating: null, // Rating is null when review is text-only without star rating
+      date: "January 18, 2024",
+      profileImage: "",
+      source: "Facebook",
+      sourceUrl: "https://web.facebook.com/profile.php?id=100071674043223"
     }
   ],
 

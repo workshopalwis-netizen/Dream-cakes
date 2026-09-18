@@ -250,7 +250,140 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // --- 4. ACCESSIBLE FAQ ACCORDION ---
+  // --- 4. DYNAMIC CUSTOMER TESTIMONIALS & CAROUSEL ---
+  const testimonialsContainer = document.getElementById('testimonialsTrack');
+  const testimonialsDotsContainer = document.getElementById('testimonialsDots');
+  const testimonialPrevBtn = document.getElementById('testimonialPrev');
+  const testimonialNextBtn = document.getElementById('testimonialNext');
+  const testimonialData = siteData.testimonials || [];
+
+  const renderTestimonials = () => {
+    if (!testimonialsContainer) return;
+    testimonialsContainer.innerHTML = '';
+
+    if (testimonialData.length === 0) {
+      testimonialsContainer.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem; color: var(--color-text-muted);">
+          <p>No customer reviews available at this moment.</p>
+        </div>
+      `;
+      return;
+    }
+
+    testimonialData.forEach((item, index) => {
+      const card = document.createElement('article');
+      card.className = 'testimonial-card';
+      card.dataset.index = index;
+
+      // Calculate initials if no profile picture
+      const initials = (item.name || 'Customer')
+        .split(' ')
+        .filter(Boolean)
+        .map(n => n[0])
+        .join('')
+        .substring(0, 2)
+        .toUpperCase();
+
+      const avatarHtml = item.profileImage
+        ? `<div class="testimonial-avatar"><img src="${item.profileImage}" alt="${item.name}" loading="lazy"></div>`
+        : `<div class="testimonial-avatar">${initials}</div>`;
+
+      // Render stars only when rating is present and valid
+      const starsHtml = (item.rating && typeof item.rating === 'number' && item.rating > 0)
+        ? `<div class="testimonial-stars" aria-label="${item.rating} out of 5 stars">${'★'.repeat(Math.min(5, Math.max(1, Math.round(item.rating))))}</div>`
+        : '';
+
+      const dateHtml = item.date
+        ? `<span>${item.date}</span>`
+        : '';
+
+      const sourceUrl = item.sourceUrl || siteData.business?.social?.facebook || 'https://web.facebook.com/profile.php?id=100071674043223';
+      const sourceName = item.source || 'Facebook Review';
+
+      card.innerHTML = `
+        ${starsHtml}
+        <blockquote class="testimonial-quote">${item.review}</blockquote>
+        <div class="testimonial-author-row">
+          <div class="testimonial-profile">
+            ${avatarHtml}
+            <div class="testimonial-meta">
+              <strong>${item.name}</strong>
+              ${dateHtml}
+            </div>
+          </div>
+          <a href="${sourceUrl}" target="_blank" rel="noopener noreferrer" class="testimonial-fb-badge" title="View on Facebook">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            <span>${sourceName}</span>
+          </a>
+        </div>
+      `;
+
+      testimonialsContainer.appendChild(card);
+    });
+
+    // Generate pagination dots for mobile slider
+    if (testimonialsDotsContainer) {
+      testimonialsDotsContainer.innerHTML = '';
+      testimonialData.forEach((_, idx) => {
+        const dot = document.createElement('button');
+        dot.className = `testimonial-dot ${idx === 0 ? 'active' : ''}`;
+        dot.setAttribute('aria-label', `Go to review ${idx + 1}`);
+        dot.addEventListener('click', () => {
+          const cards = testimonialsContainer.querySelectorAll('.testimonial-card');
+          if (cards[idx]) {
+            cards[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+          }
+        });
+        testimonialsDotsContainer.appendChild(dot);
+      });
+    }
+  };
+
+  renderTestimonials();
+
+  // Mobile Carousel Navigation
+  if (testimonialPrevBtn && testimonialsContainer) {
+    testimonialPrevBtn.addEventListener('click', () => {
+      const cardWidth = testimonialsContainer.querySelector('.testimonial-card')?.offsetWidth || 320;
+      testimonialsContainer.scrollBy({ left: -(cardWidth + 20), behavior: 'smooth' });
+    });
+  }
+
+  if (testimonialNextBtn && testimonialsContainer) {
+    testimonialNextBtn.addEventListener('click', () => {
+      const cardWidth = testimonialsContainer.querySelector('.testimonial-card')?.offsetWidth || 320;
+      testimonialsContainer.scrollBy({ left: cardWidth + 20, behavior: 'smooth' });
+    });
+  }
+
+  // Update active dot on scroll
+  if (testimonialsContainer && testimonialsDotsContainer) {
+    let scrollTimeout;
+    testimonialsContainer.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        const cards = testimonialsContainer.querySelectorAll('.testimonial-card');
+        const dots = testimonialsDotsContainer.querySelectorAll('.testimonial-dot');
+        const containerLeft = testimonialsContainer.getBoundingClientRect().left;
+        let closestIndex = 0;
+        let minDistance = Infinity;
+
+        cards.forEach((card, i) => {
+          const distance = Math.abs(card.getBoundingClientRect().left - containerLeft);
+          if (distance < minDistance) {
+            minDistance = distance;
+            closestIndex = i;
+          }
+        });
+
+        dots.forEach((dot, i) => {
+          dot.classList.toggle('active', i === closestIndex);
+        });
+      }, 50);
+    }, { passive: true });
+  }
+
+  // --- 5. ACCESSIBLE FAQ ACCORDION ---
   const faqItems = document.querySelectorAll('.faq-item');
 
   faqItems.forEach(item => {

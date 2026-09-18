@@ -72,8 +72,20 @@ To replace any photo:
 1. Drop your new `.jpg` or `.png` images into `assets/images/`.
 2. Update the filename reference in `assets/js/site-data.js` under `gallery` or `services`.
 
-### 4. Update Genuine Customer Reviews
-Add or edit client quotes in the `testimonials` list in `assets/js/site-data.js` and `index.html`.
+### 4. Update Genuine Customer Feedback
+Add or edit real customer reviews from the official Facebook page in `assets/js/site-data.js` under `testimonials`:
+```javascript
+{
+  name: "Customer Name",
+  review: "Original customer feedback text...",
+  rating: 5,        // Integer 1-5 or null if no star rating in original review
+  date: "October 2023",
+  profileImage: "", // Optional image path or URL; leave empty for initials avatar
+  source: "Facebook",
+  sourceUrl: "https://web.facebook.com/profile.php?id=100071674043223"
+}
+```
+The website automatically displays stars only when `rating` is not null, provides avatar initials fallback, and includes a mobile swipeable carousel and "View all reviews on Facebook" button.
 
 ---
 
